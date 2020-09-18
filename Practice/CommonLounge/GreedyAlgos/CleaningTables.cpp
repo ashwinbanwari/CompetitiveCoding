@@ -6,6 +6,10 @@
 #include <vector>
 #include <unordered_set>
 #include <unordered_map>
+#include <list>
+#include <climits>
+#include <algorithm>
+
 
 using namespace std;
 
@@ -24,29 +28,42 @@ void solve() {
     int N, M;
     cin >> N >> M;
     vector<int> orders(M);
-    unordered_set<int> unique;
+    unordered_map<int, list<int>> idx;
+    unordered_set<int> seated;
     // O(M)
     for (int i = 0; i < M; i++) {
         cin >> orders[i];
-        unique.insert(orders[i]);
+        idx[orders[i]].push_back(i);
     }
     int counter = 0;
-    // O(M^2)
-    for (int i : unique) {
-        unordered_map<int, int> freq;
-        int startIdx;
-        bool counting = false;
-        for (int j = 0; j < M; j++) {
-            if (orders[j] == i && freq.size() >= N) {
-                counter++;
-                freq.clear();
-            } else if (orders[j] == i) {
-                freq.clear();
-                counting = true;
-            } else if (counting) {
-                freq[orders[j]]++;
-            }
+    int startIdx = 0;
+    while (seated.size() != N && startIdx < M) {
+        if (seated.insert(orders[startIdx]).second) {
+            counter++;
         }
+        idx[orders[startIdx]].pop_front();
+        startIdx++;
     }
-    cout << counter + unique.size() << endl;
+    for (int i = startIdx; i < M; i++) {
+        if (!seated.count(orders[i])) {
+            counter++;
+            int maxi = INT_MIN;
+            int minId = -1;
+            // not already seated
+            for (int id : seated) {
+                if (idx[id].empty()) {
+                    minId = id;
+                    break;
+                }
+                if (idx[id].front() > maxi) {
+                    maxi = idx[id].front();
+                    minId = id;
+                }
+            }
+            seated.erase(minId);
+            seated.insert(orders[i]);
+        }
+        idx[orders[i]].pop_front();
+    }
+    cout << counter << endl;
 }
