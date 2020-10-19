@@ -13,7 +13,7 @@ int main() {
     // first vector for right moving bois
     int valid[R][C];
     pair<vector<long>, vector<long>> grid[R][C];
-    for (int i = 0; i < R; i++) {
+    for (int i = R-1; i >= 0; i--) {
         for (int j = 0; j < C; j++) {
             cin >> valid[i][j];
             grid[i][j].first.resize(d+1);
@@ -33,12 +33,12 @@ int main() {
                 vector<long>& toDaRight = left.first; // have been moving right;
                 for (int a = 0; a < d; a++) {
                     grid[i][j].first[a+1] = toDaRight[a];
-                    // grid[i][j].first[a+1] %= 20011;
+                    grid[i][j].first[a+1] %= 20011;
                 }
                 vector<long>& newbies = left.second; // just turned
                 for (int a = 0; a < d+1; a++) {
                     grid[i][j].first[1] += newbies[a];
-                    // grid[i][j].first[1] %= 20011;
+                    grid[i][j].first[1] %= 20011;
                 }
             }
 
@@ -48,12 +48,12 @@ int main() {
                 vector<long>& toDaBottom = top.second; // have been moving down;
                 for (int a = 0; a < d; a++) {
                     grid[i][j].second[a+1] = toDaBottom[a];
-                    // grid[i][j].second[a+1] %= 20011;
+                    grid[i][j].second[a+1] %= 20011;
                 }
                 vector<long>& newbies = top.first; // just turned
                 for (int a = 0; a < d+1; a++) {
                     grid[i][j].second[1] += newbies[a];
-                    // grid[i][j].second[1] %= 20011;
+                    grid[i][j].second[1] %= 20011;
                 }
             }
             /*int res = 0;
