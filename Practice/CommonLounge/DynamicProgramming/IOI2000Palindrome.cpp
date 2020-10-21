@@ -4,30 +4,31 @@
 
 #include <iostream>
 #include <algorithm>
-#include <cstring>
 
 using namespace std;
-int arr[5001][5001];
 
-int recurse(string& s, int i, int j) {
-    if (arr[i][j] != -1) {
-        return arr[i][j];
-    }
-    if (i >= j) {
-        return 0;
-    } 
-    if (s[i] == s[j]) {
-        return arr[i][j] = recurse(s, i+1, j-1);
-    } else {
-        return arr[i][j] = 1 + min(recurse(s, i+1, j), recurse(s, i, j-1));
-    }
-}
 int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
     int N;
-    string s;
-    cin >> N >> s;
-    memset(arr, -1, sizeof(arr));
-    cout << recurse(s, 0, s.size()-1) << endl;
+    string a;
+    cin >> N >> a;
+    string reversed = a;
+    reverse(reversed.begin(), reversed.end());
+    int dp[2][N+1];
+    for (int i = 0; i < 2; i++) {
+        dp[i][0] = 0;
+    }
+    for (int i = 0; i <= N; i++) {
+        dp[0][i] = 0;
+    }
+    for (int i = 1; i <= N; i++) {
+        for (int j = 1; j <= N; j++) {
+            // cout << "a: " << a[i-1] << "b: " << reversed[j-1] << endl;
+            if (a[i-1] == reversed[j-1]) { 
+                dp[i%2][j] = dp[(i-1)%2][j-1] + 1;
+            } else {
+                dp[i%2][j] = max(dp[(i-1)%2][j], dp[i%2] [j-1]);
+            }
+        }
+    }
+    cout << N-dp[N%2][N] << endl;
 }
