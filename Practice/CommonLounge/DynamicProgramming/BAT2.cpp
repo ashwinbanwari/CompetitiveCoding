@@ -35,28 +35,6 @@ void solve(vector<int>& rooms) {
             }
         }
     }
-    
-    vector<int> dp2(N);
-    dp2[N-1] = (dp[maxIdx].second.find(N-1) == dp[maxIdx].second.end()) ? 1 : 0;
-    int maxCount2 = dp2[N-1];
-    for (int i = N-2; i >= 0; i--) {
-        int maxVal = -1;
-        for (int j = i+1; j < N; j++) {
-            if (rooms[j] < rooms[i] && dp2[j] > maxVal && dp[maxIdx].second.find(j) == dp[maxIdx].second.end()) {
-                maxVal = dp2[j];
-            }
-        }
-        if (maxVal == -1) {
-            dp2[i] = (dp[maxIdx].second.find(i) == dp[maxIdx].second.end()) ? 1 : 0;
-        } else {
-            dp2[i] = maxVal;
-            if (dp[maxIdx].second.find(i) == dp[maxIdx].second.end()) {
-                dp2[i]++;
-            }
-            maxCount2 = max(maxCount2, dp2[i]);
-        }
-    }
-    cout << maxCount + maxCount2 << endl;
 }
 
 
