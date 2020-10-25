@@ -10,7 +10,7 @@
 using namespace std;
 
 void solve(vector<int>& rooms) {
-    int N = rooms.size();
+    /*int N = rooms.size();
     vector<pair<int, unordered_set<int>>> dp(N);
     dp[0] = make_pair(1, unordered_set<int>{0});
     int maxCount = 1;
@@ -34,7 +34,7 @@ void solve(vector<int>& rooms) {
                 maxIdx = i;
             }
         }
-    }
+    }*/
 }
 
 
