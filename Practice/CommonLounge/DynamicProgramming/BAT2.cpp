@@ -6,46 +6,35 @@
 #include <vector>
 #include <unordered_set>
 #include <algorithm>
+#include <cstring>
 
 using namespace std;
 
-void solve(vector<int>& rooms) {
-    /*int N = rooms.size();
-    vector<pair<int, unordered_set<int>>> dp(N);
-    dp[0] = make_pair(1, unordered_set<int>{0});
-    int maxCount = 1;
-    int maxIdx = 0;
-    for (int i = 1; i < N; i++) {
-        int maxId = -1;
-        int maxVal = 0;
-        for (int j = 0; j < i; j++) {
-            if (rooms[j] < rooms[i] && dp[j].first > maxVal) {
-                maxId = j;
-                maxVal = dp[j].first;
-            }
-        }
-        if (maxId == -1) {
-            dp[i] = make_pair(1, unordered_set<int>{i});
-        } else {
-            dp[i] = make_pair(1 + dp[maxId].first, unordered_set<int>(dp[maxId].second.begin(), dp[maxId].second.end()));
-            dp[i].second.insert(i);
-            if (dp[i].first > maxCount) {
-                maxCount = dp[i].first;
-                maxIdx = i;
-            }
-        }
-    }*/
+long n;
+
+long ans (long ind, long x, long y, vector<vector<vector<long>>>& dp, vector<long>& a){
+    if(ind == n + 1) return 0;
+    if(dp[ind][x][y] != -1) return dp[ind][x][y];
+    long ret = ans(ind+1,x,y, dp, a);
+    if(x == 0) ret = max(ret,1 + ans(ind+1,ind,y, dp, a));     // chose the 1st element  belonging to the increasing seq.
+    if(y == 0) ret = max(ret,1 + ans(ind+1,x,ind, dp, a));     // chose the 1st element  belonging to the decreasing seq.
+    if(a[ind] > a[x]) ret = max(ret,1 + ans(ind+1,ind,y, dp, a));
+    if(a[ind] < a[y]) ret = max(ret,1 + ans(ind+1,x,ind, dp, a));
+    return dp[ind][x][y] = ret;
+}
+void solve(vector<long>& rooms) {
+    vector<vector<vector<long>>> dp(rooms.size()+1, vector<vector<long>>(rooms.size()+1, vector<long>(rooms.size()+1, -1)));
+    cout << ans(1, 0, 0, dp, rooms) << endl;
 }
 
 
 int main() {
-    int t;
+    long t;
     cin >> t;
     while (t--) {
-        int n;
         cin >> n;
-        vector<int> in(n);
-        for (int i = 0; i < n; i++) {
+        vector<long> in(n);
+        for (long i = 0; i < n; i++) {
             cin >> in[i];
         }
         solve(in);
