@@ -16,8 +16,8 @@ long long ans (long long ind, long long x, long long y, vector<vector<vector<lon
     if(ind == n + 1) return 0;
     if(dp[ind][x][y] != -1) return dp[ind][x][y];
     long long ret = ans(ind+1,x,y, dp, a);
-    if(x == 0) ret = max(ret,1 + ans(ind+1,ind,y, dp, a));     // chose the 1st element  belong longing to the increasing seq.
-    if(y == 0) ret = max(ret,1 + ans(ind+1,x,ind, dp, a));     // chose the 1st element  belong longing to the decreasing seq.
+    if(x == 0) ret = max(ret,1 + ans(ind+1,ind,y, dp, a));
+    if(y == 0) ret = max(ret,1 + ans(ind+1,x,ind, dp, a));
     if(a[ind] > a[x]) ret = max(ret,1 + ans(ind+1,ind,y, dp, a));
     if(a[ind] < a[y]) ret = max(ret,1 + ans(ind+1,x,ind, dp, a));
     return dp[ind][x][y] = ret;
