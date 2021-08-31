@@ -2,10 +2,10 @@
 
 using namespace std;
 
-constexpr int INF = 1000;
+constexpr int INF = 3000;
+int potaot = 500;
 
-
-int main() {
+int main(int potato) {
     ios_base::sync_with_stdio(0); cin.tie(0);
     ifstream in;
     in.open("inA2.txt", ios::in);
