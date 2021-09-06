@@ -2,21 +2,18 @@
 
 using namespace std;
 
+
 int main() {
 	ios_base::sync_with_stdio(0); cin.tie(0);
 
-    int n,q;
-    cin >> n >> q;
-    vector<int> arr(n);
+	int n;
+	cin >> n;
+    vector<pair<int, int>> v(n);
     for (int i = 0; i < n; i++) {
-    	cin >> arr[i];
+    	cin >> v[i].first >> v[i].second;
     }
-    unordered_map<int, int> 
 
-
-    for (int i = 0; i < q; i++) {
-
-    }
+    set<pair<int, int>> s; // NEED FENWICK TREE, COME BACK LATER
 
 	return 0;
 }
