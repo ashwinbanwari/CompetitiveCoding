@@ -18,39 +18,6 @@ vector<int> best(string a, string b) {
     return indexes;
 }
 
-vector<int> keepIncreasing(vector<int> a, vector<int> b) {
-	for (int i : a) {
-		cerr << i << " ";
-	}
-	cerr << endl;
-	for (int i : b) {
-		cerr << i << " ";
-	}
-	cerr << endl;
-
-	auto bSegment = lower_bound(b.begin(), b.end(), a.back());
-	auto aSegment = lower_bound(a.begin(), a.end(), b.front());
-	
-	// cerr << *aSegment << endl;
-	// cerr << *bSegment << endl;
-	int aSegLen = distance(aSegment, a.end());
-	int bSegLen = distance(b.begin(), bSegment);
-	if (aSegment == a.begin()) {
-		aSegLen = 0;
-	}
-	cerr << aSegLen << " " << bSegLen << endl;
-	vector<int> ans;
-	if (aSegLen < bSegLen) {
-		if (aSegLen != 0) {
-			ans.insert(ans.end(), a.begin(), aSegment);
-		}
-		ans.insert(ans.end(), b.begin(), b.end());
-	} else {
-		ans.insert(ans.end(), a.begin(), a.end());
-		ans.insert(ans.end(), bSegment, b.end());
-	}
-	return ans;
-}
 
 int main() {
 	ios_base::sync_with_stdio(0); cin.tie(0);
@@ -67,25 +34,38 @@ int main() {
     	bestRight[i] = a.size() - bestRight[i] - 1;
     }
     reverse(bestRight.begin(), bestRight.end());
-    vector<int> resultIdxes;
-    cerr << "bestLeft size " << bestLeft.size() << " bestRight size " << bestRight.size() << endl;
-    if (bestLeft.empty() && bestRight.empty()) {
-    	cout << "-" << endl;
-    	return 0;
-    } else if (bestLeft.empty()) {
-    	resultIdxes = bestRight;
-    } else if (bestRight.empty()) {
-    	resultIdxes = bestLeft;
-    } else {
-    	resultIdxes = keepIncreasing(bestLeft, bestRight);
-    }
-    auto last = unique(resultIdxes.begin(), resultIdxes.end());
-    resultIdxes.erase(last, resultIdxes.end());
-    for (int i : resultIdxes) {
+
+    int bestMax = 0;
+    int bestSzLeft = 0;
+    int bestSzRight = 0;
+    /*for (int i : bestLeft) {
     	cerr << i << " ";
-    	cout << a[i];
     }
     cerr << endl;
+    for (int i : bestRight) {
+    	cerr << i << " ";
+    }
+    cerr << endl;*/
+    for (int i = -1; i < (int)a.size(); i++) {
+    	int szLeft = distance(bestLeft.begin(), upper_bound(bestLeft.begin(), bestLeft.end(), i));
+    	int szRight = distance(lower_bound(bestRight.begin(), bestRight.end(), i+1), bestRight.end());
+    	int len = szLeft + szRight;
+    	// cerr << szLeft << " " << szRight << endl;
+    	if (len > bestMax) {
+    		bestMax = len;
+    		bestSzLeft = szLeft;
+    		bestSzRight = szRight;
+    	}
+    }
+    if (bestMax == 0) {
+    	cout << "-" << endl;
+    } else if (bestMax >= b.size()) {
+    	cout << b << endl;
+    } else {
+    	cout << b.substr(0, bestSzLeft) << b.substr(b.size() - bestSzRight) << endl;
+    }
+    
+    
 
     
 
