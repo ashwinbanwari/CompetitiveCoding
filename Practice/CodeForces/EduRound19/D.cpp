@@ -9,19 +9,17 @@ public:
 	Node(int v, int l, int r) : v(v), l(l), r(r) {}
 };
 
-bool find(int currNode, int x, vector<Node>& nodes) {
+void dfs(int currNode, int minVal, int maxVal, vector<Node>& nodes, set<int>& workingVals) {
 	// cerr << currNode << endl;
 	if (currNode == -2) {
-		return false;
+		return;
 	}
-	if (nodes[currNode].v == x) {
-		return true;
+	if (minVal <= nodes[currNode].v && maxVal >= nodes[currNode].v) {
+		workingVals.insert(nodes[currNode].v);
 	}
-	if (x < nodes[currNode].v) {
-		return find(nodes[currNode].l, x, nodes);
-	} else {
-		return find(nodes[currNode].r, x, nodes);
-	}
+	
+	dfs(nodes[currNode].l, minVal, min(maxVal, nodes[currNode].v), nodes, workingVals);
+	dfs(nodes[currNode].r, max(minVal, nodes[currNode].v), maxVal, nodes, workingVals);
 }
 
 int main() {
@@ -41,11 +39,14 @@ int main() {
     	seen[r-1] = true;
     }
     int head = min_element(seen.begin(), seen.end()) - seen.begin();
-    int ans = 0;
+    set<int> workingVals;
+    long long ans = 0;
+    dfs(head, 0, pow(10,9) + 1, nodes, workingVals);
     for (int i = 0; i < nodes.size(); i++) {
-    	if (!find(head, nodes[i].v, nodes)) ans++;
+    	if (!workingVals.count(nodes[i].v)) {
+    		ans++;
+    	}
     }
-
     cout << ans << endl;
 
 	return 0;
