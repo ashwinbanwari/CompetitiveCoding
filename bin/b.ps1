@@ -36,9 +36,10 @@ $OutputFile = "output.txt"
 $ExeFile = [System.IO.Path]::ChangeExtension($CppFile, ".exe")
 
 ### COMPILATION ###
+$CompileOptions = @("-Wall", "-Wextra", "-Wpedantic", "-Wshadow", "-std=c++17", "-O2")
 $StartTime = Get-Date
 Write-Host "Compiling '$CppFile' with clang++..." -ForegroundColor Yellow
-clang++ "$CppFile" -o "$ExeFile"
+clang++ "$CppFile" $CompileOptions -o "$ExeFile"
 $CompileTime = (Get-Date) - $StartTime
 
 # Check if compilation was successful (exit code 0)
