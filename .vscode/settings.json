@@ -82,6 +82,7 @@
         "valarray": "cpp",
         "variant": "cpp",
         "ios": "cpp",
-        "xiosbase": "cpp"
+        "xiosbase": "cpp",
+        "xstring": "cpp"
     }
 }
